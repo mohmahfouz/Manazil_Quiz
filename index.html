@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ما هى المنزلة الطالعة بالغداة؟</title>
+    <title>ما هى المنزلة الطالعة بالغداة فى الصورة؟</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -130,6 +130,11 @@
             .image-container {
                 display: none;
             }
+            .image {
+                width: 300px;
+                max-width: 100%;
+                margin-top: 20px;
+            }
             .description {
                 padding: 0 10px;
             }
@@ -137,7 +142,7 @@
     </style>
 </head>
 <body>
-    <div class="page-title">تعرف على حركة الشمس فى منازلها على الطبيعة</div>
+    <div class="page-title">ما هى المنزلة الطالعة بالغداة فى الصورة؟</div>
     <div class="author">إعداد: محمد محفوظ</div>
     <div class="description">
         استلهامًا وتطبيقًا لبحث فيض العليم في معرفة التقويم للسيد الأستاذ فرقد الحسيني القزويني دام فيضه، إليكم أسئلة تدريبية تساعد على التعرف على منزلة الشمس الطالعة بالغداة.<br><br>
@@ -148,11 +153,12 @@
             <img id="mansion-image" class="image" src="" alt="صورة المنزلة">
         </div>
         <div class="quiz-container">
-            <div class="question">ما هى المنزلة الطالعة بالغداة؟</div>
+            <div class="question">ما هى المنزلة الطالعة بالغداة فى الصورة؟</div>
             <div class="options" id="options"></div>
             <button class="submit-btn" id="submit">تحقق</button>
             <div class="feedback" id="feedback"></div>
             <button class="next-btn" id="next">التالي</button>
+            <img id="mansion-image-mobile" class="image" src="" alt="صورة المنزلة">
         </div>
     </div>
     <script>
@@ -186,7 +192,7 @@
             {"arabic_name": "الفرغ المؤخر", "filename": "the_rear_bucket_mouth.jpg"},
             {"arabic_name": "الرشا أو السمكة", "filename": "the_fish.jpg"}
         ];
-
+        
         let currentMansion;
         let selectedOption;
 
@@ -201,6 +207,7 @@
         function loadQuiz() {
             currentMansion = lunarStations[Math.floor(Math.random() * lunarStations.length)];
             document.getElementById('mansion-image').src = currentMansion.filename;
+            document.getElementById('mansion-image-mobile').src = currentMansion.filename;
 
             let options = [currentMansion.arabic_name];
             while (options.length < 4) {
