@@ -88,8 +88,21 @@
             background: #3498db;
             color: #fff;
         }
-        .submit-btn, .next-btn {
+        .option.correct {
+            background: #1a3c34;
+            color: #fff;
+        }
+        .option.incorrect {
+            background: #e74c3c;
+            color: #fff;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
             margin-top: 20px;
+        }
+        .submit-btn, .next-btn {
             padding: 10px 20px;
             background: #27ae60;
             color: #fff;
@@ -106,7 +119,7 @@
             font-size: 1.2em;
         }
         .correct {
-            color: #27ae60;
+            color: #1a3c34;
         }
         .incorrect {
             color: #e74c3c;
@@ -155,9 +168,11 @@
         <div class="quiz-container">
             <div class="question">ما هى المنزلة الطالعة بالغداة فى الصورة؟</div>
             <div class="options" id="options"></div>
-            <button class="submit-btn" id="submit">تحقق</button>
+            <div class="button-container">
+                <button class="next-btn" id="next">التالي</button>
+                <button class="submit-btn" id="submit">تحقق</button>
+            </div>
             <div class="feedback" id="feedback"></div>
-            <button class="next-btn" id="next">التالي</button>
             <img id="mansion-image-mobile" class="image" src="" alt="صورة المنزلة">
         </div>
     </div>
@@ -223,7 +238,7 @@
                 div.classList.add('option');
                 div.textContent = option;
                 div.onclick = () => {
-                    document.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
+                    document.querySelectorAll('.option').forEach(el => el.classList.remove('selected', 'correct', 'incorrect'));
                     div.classList.add('selected');
                     selectedOption = option;
                 };
@@ -241,14 +256,21 @@
                 return;
             }
             const feedback = document.getElementById('feedback');
+            const selectedElement = Array.from(document.querySelectorAll('.option')).find(el => el.textContent === selectedOption);
             if (selectedOption === currentMansion.arabic_name) {
                 feedback.textContent = 'صحيح! المنزلة هي: ' + currentMansion.arabic_name;
+                feedback.classList.remove('incorrect');
                 feedback.classList.add('correct');
+                selectedElement.classList.remove('selected');
+                selectedElement.classList.add('correct');
             } else {
                 feedback.textContent = 'خطأ. الإجابة الصحيحة هي: ' + currentMansion.arabic_name;
+                feedback.classList.remove('correct');
                 feedback.classList.add('incorrect');
+                selectedElement.classList.remove('selected');
+                selectedElement.classList.add('incorrect');
             }
-            document.getElementById('next').style.display = 'block';
+            document.getElementById('next').style.display = 'inline-block';
         };
 
         document.getElementById('next').onclick = () => {
