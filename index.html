@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ما هى المنزلة الطالعة بالغداة؟</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Amiri', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .page-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .author {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .description {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            max-width: 800px;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .quiz-container {
+            flex: 1;
+            max-width: 600px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-height: 700px;
+            overflow-y: auto;
+        }
+        .image-container {
+            flex: 0 0 400px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .question {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .image {
+            max-width: 100%;
+            width: 400px;
+            height: auto;
+            border-radius: 10px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            background: #e0e0e0;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .option.selected {
+            background: #3498db;
+            color: #fff;
+        }
+        .submit-btn, .next-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #27ae60;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .submit-btn:hover, .next-btn:hover {
+            background: #219a52;
+        }
+        .feedback {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        .correct {
+            color: #27ae60;
+        }
+        .incorrect {
+            color: #e74c3c;
+        }
+        .next-btn {
+            display: none;
+            background: #3498db;
+        }
+        .next-btn:hover {
+            background: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .quiz-container {
+                max-width: 100%;
+                max-height: none;
+            }
+            .image-container {
+                display: none;
+            }
+            .description {
+                padding: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-title">تعرف على حركة الشمس فى منازلها على الطبيعة</div>
+    <div class="author">إعداد: محمد محفوظ</div>
+    <div class="description">
+        استلهامًا وتطبيقًا لبحث فيض العليم في معرفة التقويم للسيد الأستاذ فرقد الحسيني القزويني دام فيضه، إليكم أسئلة تدريبية تساعد على التعرف على منزلة الشمس الطالعة بالغداة.<br><br>
+        التقويم المحمدى هو نتيجة بحث السيد الأستاذ فرقد الحسينى القزوينى دام فيضه: لا علاقة له بحركة القمر. بل هو: تقويم شمسى نجمى يعتمد على حركة الشمس فى منازلها لمعرفة مواقع الشهور فى الفصول أولا. ومعرفة عدد السنين. المصدر كتاب فيض العليم في معرفة التقويم للسيد الأستاذ فرقد الحسيني القزويني.
+    </div>
+    <div class="container">
+        <div class="image-container">
+            <img id="mansion-image" class="image" src="" alt="صورة المنزلة">
+        </div>
+        <div class="quiz-container">
+            <div class="question">ما هى المنزلة الطالعة بالغداة؟</div>
+            <div class="options" id="options"></div>
+            <button class="submit-btn" id="submit">تحقق</button>
+            <div class="feedback" id="feedback"></div>
+            <button class="next-btn" id="next">التالي</button>
+        </div>
+    </div>
+    <script>
+        const lunarStations = [
+            {"arabic_name": "الشرطان", "filename": "the_two_signs.jpg"},
+            {"arabic_name": "البطين", "filename": "the_little_abdomen.jpg"},
+            {"arabic_name": "الثريا", "filename": "al-thurayya.jpg"},
+            {"arabic_name": "الدبران", "filename": "al_dabaran.jpg"},
+            {"arabic_name": "الهقعة", "filename": "the_circular_mark.jpg"},
+            {"arabic_name": "الهنعة", "filename": "stoopness.jpg"},
+            {"arabic_name": "الذراع", "filename": "the_arm.jpg"},
+            {"arabic_name": "النثرة", "filename": "the_nostrils.jpg"},
+            {"arabic_name": "الطرف", "filename": "eyes.jpg"},
+            {"arabic_name": "الجبهة", "filename": "the_forehead.jpg"},
+            {"arabic_name": "الزبرة", "filename": "the_mane.jpg"},
+            {"arabic_name": "الصرفة", "filename": "star_of_weather_change.jpg"},
+            {"arabic_name": "العواء", "filename": "the_bend.jpg"},
+            {"arabic_name": "السماك الأعزل", "filename": "the_unarmed_high_one.jpg"},
+            {"arabic_name": "الغفر", "filename": "the_cover.jpg"},
+            {"arabic_name": "الزبانى", "filename": "the_claws.jpg"},
+            {"arabic_name": "الإكليل", "filename": "the_diadem.jpg"},
+            {"arabic_name": "القلب", "filename": "the_heart.jpg"},
+            {"arabic_name": "الشولة", "filename": "the_sting.jpg"},
+            {"arabic_name": "النعائم", "filename": "the_ostriches.jpg"},
+            {"arabic_name": "البلدة", "filename": "the_empty_area.jpg"},
+            {"arabic_name": "سعد الذابح", "filename": "the_lucky_star_of_the_slaughterer.jpg"},
+            {"arabic_name": "سعد بلع", "filename": "the_lucky_star_of_the_swallower.jpg"},
+            {"arabic_name": "سعد السعود", "filename": "the_luckiest_of_the_lucky_stars.jpg"},
+            {"arabic_name": "سعد الأخبية", "filename": "the_lucky_stars_of_the_tent_dwellers.jpg"},
+            {"arabic_name": "الفرغ المقدم", "filename": "the_front_bucket_mouth.jpg"},
+            {"arabic_name": "الفرغ المؤخر", "filename": "the_rear_bucket_mouth.jpg"},
+            {"arabic_name": "الرشا أو السمكة", "filename": "the_fish.jpg"}
+        ];
+
+        let currentMansion;
+        let selectedOption;
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function loadQuiz() {
+            currentMansion = lunarStations[Math.floor(Math.random() * lunarStations.length)];
+            document.getElementById('mansion-image').src = currentMansion.filename;
+
+            let options = [currentMansion.arabic_name];
+            while (options.length < 4) {
+                const random = lunarStations[Math.floor(Math.random() * lunarStations.length)].arabic_name;
+                if (!options.includes(random)) options.push(random);
+            }
+            options = shuffle(options);
+
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            options.forEach(option => {
+                const div = document.createElement('div');
+                div.classList.add('option');
+                div.textContent = option;
+                div.onclick = () => {
+                    document.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
+                    div.classList.add('selected');
+                    selectedOption = option;
+                };
+                optionsDiv.appendChild(div);
+            });
+
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('next').style.display = 'none';
+            selectedOption = null;
+        }
+
+        document.getElementById('submit').onclick = () => {
+            if (!selectedOption) {
+                alert('يرجى اختيار إجابة');
+                return;
+            }
+            const feedback = document.getElementById('feedback');
+            if (selectedOption === currentMansion.arabic_name) {
+                feedback.textContent = 'صحيح! المنزلة هي: ' + currentMansion.arabic_name;
+                feedback.classList.add('correct');
+            } else {
+                feedback.textContent = 'خطأ. الإجابة الصحيحة هي: ' + currentMansion.arabic_name;
+                feedback.classList.add('incorrect');
+            }
+            document.getElementById('next').style.display = 'block';
+        };
+
+        document.getElementById('next').onclick = () => {
+            loadQuiz();
+        };
+
+        loadQuiz();
+    </script>
+</body>
+</html>
